@@ -1,8 +1,8 @@
 #![allow(special_module_name)]
 
-mod lib;
+mod twenty_two;
 
-use crate::lib::{one::run_1, two::answer::run_2};
+use crate::twenty_two::{one::run_1, two::answer::run_2};
 use std::process::exit;
 
 const RUN: u8 = 2;
@@ -17,3 +17,7 @@ fn main() -> Result<(), anyhow::Error> {
         }
     }
 }
+
+// TODO:
+
+// [ ] add by year selection when multiple years will exist
