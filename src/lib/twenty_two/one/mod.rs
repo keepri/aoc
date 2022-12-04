@@ -3,7 +3,7 @@ use std::fs;
 use anyhow::{Ok, Result};
 
 pub fn run_1() -> Result<()> {
-    let input = fs::read_to_string("./src/lib/one/input.txt")?;
+    let input = fs::read_to_string("static/files/input_1.txt")?;
 
     let found = input.split("\n\n").collect::<Vec<_>>();
 

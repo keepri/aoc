@@ -46,7 +46,7 @@ pub mod answer {
     const LOSS: u8 = 0;
 
     pub fn run_2() -> Result<()> {
-        let input = fs::read_to_string("./src/lib/two/input.txt")?;
+        let input = fs::read_to_string("static/files/input_2.txt")?;
         let lines = input.lines().into_iter();
 
         let mut total_score: u32 = 0;
