@@ -1,64 +1,54 @@
 use anyhow::Result;
-use std::{fs, process::exit};
+use std::fs;
 
 pub fn run_3() -> Result<()> {
     let rucksacks = fs::read_to_string("static/files/input_3.txt")?;
     let rucksacks = rucksacks.lines().collect::<Vec<_>>();
 
-    let mut final_score: u32 = 0;
-    for item_list in rucksacks {
-        let (compartment1, compartment2) = item_list.split_at(item_list.len() / 2);
+    let mut part_one_score: u32 = 0;
+    for list in rucksacks.clone() {
+        let (compartment1, compartment2) = list.split_at(list.len() / 2);
         let compartment1_items = compartment1.trim().split("").collect::<Vec<_>>();
         let compartment2_items = compartment2.trim().split("").collect::<Vec<_>>();
 
-        let common_item = find_common_item(&compartment1_items, &compartment2_items);
-        let common_item = match common_item.chars().next() {
-            Some(c) => c,
-            _ => {
-                eprintln!("common item to chars");
-                exit(1)
-            }
-        };
+        let common_item =
+            find_common_item([compartment1_items, compartment2_items]).expect("common item");
+        let common_item = common_item.chars().next().expect("common item to chars");
 
-        let score = match score_item(&common_item) {
-            Some(s) => s,
-            _ => {
-                eprintln!("error scoring item");
-                exit(1)
-            }
-        };
-
+        let score = score_item(&common_item).expect("scoring item");
         let score = score as u32;
-        final_score += score;
-        // println!("common item {common_item} with score {score}");
+        part_one_score += score;
     }
 
-    println!("final score is {final_score}");
+    let mut part_two_score: u32 = 0;
+
+    println!("part one score is {part_one_score}");
+    println!("part two score is {part_two_score}");
 
     Ok(())
 }
 
-fn find_common_item<'a, 'b>(pile1: &Vec<&'a str>, pile2: &Vec<&'b str>) -> &'a str {
+fn find_common_item(piles: [Vec<&str>; 2]) -> Option<&str> {
+    let pile1 = &piles[0];
+    let pile2 = &piles[1];
+
     for item1 in pile1 {
         if item1.len() == 0 {
-            // println!("skipped empty string");
             continue;
         }
 
         for item2 in pile2 {
             if item2.len() == 0 {
-                // println!("skipped empty string");
                 continue;
             }
 
-            // println!("checking {item1} against {item2}");
             if item1.cmp(item2).is_eq() {
-                return item1;
+                return Some(item1);
             }
         }
     }
 
-    panic!("could not find common item");
+    None
 }
 
 fn score_item(item: &char) -> Option<u8> {
