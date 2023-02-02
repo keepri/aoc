@@ -20,7 +20,7 @@ pub fn run_3() -> Result<()> {
         part_one_score += score;
     }
 
-    let mut part_two_score: u32 = 0;
+    let part_two_score: u32 = 0;
 
     println!("part one score is {part_one_score}");
     println!("part two score is {part_two_score}");
