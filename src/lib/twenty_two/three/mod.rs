@@ -23,7 +23,7 @@ pub fn run_3() -> Result<()> {
     let part_two_score: u32 = 0;
 
     println!("part one score is {part_one_score}");
-    println!("part two score is {part_two_score}");
+    println!("part two score is {part_two_score} - not done");
 
     Ok(())
 }
