@@ -21,7 +21,7 @@ fn main() -> Result<(), anyhow::Error> {
             2 => run_2(),
             3 => run_3(),
             _ => {
-                eprintln!("{year} day not done");
+                eprintln!("{year} {day} not done");
                 process::exit(1)
             }
         },
