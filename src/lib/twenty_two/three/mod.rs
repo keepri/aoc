@@ -8,18 +8,19 @@ pub fn run_3() -> Result<()> {
     let mut part_one_score: u32 = 0;
     let part_two_score: u32 = 0;
 
-    for list in rucksacks {
-        let (compartment_one, compartment_two) = list.split_at(list.len() / 2);
-        let compartment_one_items = compartment_one.trim().split("").collect::<Vec<_>>();
-        let compartment_two_items = compartment_two.trim().split("").collect::<Vec<_>>();
+    for item_list in rucksacks {
+        let item_list = item_list.trim();
+        let (compartment_one, compartment_two) = item_list.split_at(item_list.len() / 2);
+        let pile_one = compartment_one.chars().collect::<Vec<_>>();
+        let pile_two = compartment_two.chars().collect::<Vec<_>>();
 
-        let common_item =
-            find_common_item([compartment_one_items, compartment_two_items]).expect("common item");
-        let common_item = common_item.chars().next().expect("common item to chars");
-
-        let score = score_item(&common_item).expect("scoring item");
-        let score = score as u32;
-        part_one_score += score;
+        match find_common_item(&pile_one, &pile_two) {
+            Some(common_item) => {
+                let score = score_item(&common_item).expect("scoring item");
+                part_one_score += score as u32;
+            }
+            None => println!("could not find common item for {}", item_list),
+        }
     }
 
     println!("part 1 answer: {}", part_one_score);
@@ -28,22 +29,11 @@ pub fn run_3() -> Result<()> {
     Ok(())
 }
 
-fn find_common_item(piles: [Vec<&str>; 2]) -> Option<&str> {
-    let pile1 = &piles[0];
-    let pile2 = &piles[1];
-
-    for item1 in pile1 {
-        if item1.len() == 0 {
-            continue;
-        }
-
-        for item2 in pile2 {
-            if item2.len() == 0 {
-                continue;
-            }
-
-            if item1.cmp(item2).is_eq() {
-                return Some(item1);
+fn find_common_item<'a, 'b>(pile_one: &'a Vec<char>, pile_two: &'b Vec<char>) -> Option<&'a char> {
+    for char_one in pile_one {
+        for char_two in pile_two {
+            if char_one == char_two {
+                return Some(&char_one);
             }
         }
     }

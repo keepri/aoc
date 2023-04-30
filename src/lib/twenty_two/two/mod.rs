@@ -49,20 +49,16 @@ pub fn run_2() -> Result<()> {
 
     for line in lines {
         let (char_one, char_two) = parse_line(line);
+        let opponent_shape = get_shape_by_mapping(&char_one).expect("opponent shape");
 
-        match get_shape_by_mapping(&char_one) {
-            Some(opponent_shape) => {
-                if let Some(shape) = shape_to_play(&char_one, &char_two, 1) {
-                    let score_1 = play(&opponent_shape, &shape);
-                    part_one_score += score_1 as u32;
-                };
+        if let Some(shape) = shape_to_play(&char_one, &char_two, 1) {
+            let score_1 = play(&opponent_shape, &shape);
+            part_one_score += score_1 as u32;
+        };
 
-                if let Some(shape) = shape_to_play(&char_one, &char_two, 2) {
-                    let score_2 = play(&opponent_shape, &shape);
-                    part_two_score += score_2 as u32;
-                };
-            }
-            _ => panic!("could not get shape for mapping {}", char_one),
+        if let Some(shape) = shape_to_play(&char_one, &char_two, 2) {
+            let score_2 = play(&opponent_shape, &shape);
+            part_two_score += score_2 as u32;
         };
     }
 
