@@ -1,37 +1,35 @@
 use anyhow::Result;
-use std::fs;
-
-use std::{collections::HashMap, process::exit};
+use std::{char, fs, process::exit};
 
 #[derive(Debug, Clone, Copy)]
 struct Shape {
-    id: &'static str,
-    mapping: char,
+    _id: &'static str,
+    mappings: [char; 2],
     power: u8,
     weakness: char,
     strength: char,
 }
 
 const ROCK: Shape = Shape {
-    id: "rock",
+    _id: "rock",
     power: 1,
-    mapping: 'A',
+    mappings: ['A', 'X'],
     weakness: 'B',
     strength: 'C',
 };
 
 const PAPER: Shape = Shape {
-    id: "paper",
+    _id: "paper",
     power: 2,
-    mapping: 'B',
+    mappings: ['B', 'Y'],
     weakness: 'C',
     strength: 'A',
 };
 
 const SCISSORS: Shape = Shape {
-    id: "scissors",
+    _id: "scissors",
     power: 3,
-    mapping: 'C',
+    mappings: ['C', 'Z'],
     weakness: 'A',
     strength: 'B',
 };
@@ -46,81 +44,91 @@ pub fn run_2() -> Result<()> {
     let input = fs::read_to_string("static/files/input_2.txt")?;
     let lines = input.lines().into_iter();
 
-    let mut total_score: u32 = 0;
+    let mut part_one_score: u32 = 0;
+    let mut part_two_score: u32 = 0;
+
     for line in lines {
-        let (shape_1, shape_2) = parse(line);
-        let score = [play(&shape_1, &shape_2)].map(Into::<u32>::into)[0];
-        total_score += score;
+        let (char_one, char_two) = parse_line(line);
+
+        match get_shape_by_mapping(&char_one) {
+            Some(opponent_shape) => {
+                if let Some(shape) = shape_to_play(&char_one, &char_two, 1) {
+                    let score_1 = play(&opponent_shape, &shape);
+                    part_one_score += score_1 as u32;
+                };
+
+                if let Some(shape) = shape_to_play(&char_one, &char_two, 2) {
+                    let score_2 = play(&opponent_shape, &shape);
+                    part_two_score += score_2 as u32;
+                };
+            }
+            _ => panic!("could not get shape for mapping {}", char_one),
+        };
     }
 
-    println!("final score {total_score}");
+    println!("part 1 answer: {}", part_one_score);
+    println!("part 2 answer: {}", part_two_score);
 
     Ok(())
 }
 
 fn play(shape_1: &Shape, shape_2: &Shape) -> u8 {
-    let shape_2_power = shape_2.power;
-
-    if shape_2.mapping.cmp(&shape_1.weakness).is_eq() {
+    if shape_2.mappings[0].cmp(&&shape_1.weakness).is_eq() {
         // println!("{} beats {}", shape_2.id, shape_1.id);
-        return WIN + shape_2_power;
+        return WIN + shape_2.power;
     }
 
-    if shape_1.mapping.cmp(&shape_2.weakness).is_eq() {
+    if shape_1.mappings[0].cmp(&&shape_2.weakness).is_eq() {
         // println!("{} beats {}", shape_1.id, shape_2.id);
-        return LOSS + shape_2_power;
+        return LOSS + shape_2.power;
     }
 
     // println!("both chose {}", shape_1.id);
-    DRAW + shape_2_power
+    DRAW + shape_2.power
 }
 
-fn parse(line: &str) -> (Shape, Shape) {
+fn parse_line(line: &str) -> (char, char) {
     let inputs = line
         .split(" ")
         .map(|e| e.chars().next().expect("invalid line"))
-        .collect::<Vec<_>>();
+        .collect::<Vec<char>>();
 
-    let opponent_shape = inputs[0];
-    let outcome_secret = inputs[1];
-    let (shape_1, shape_2) = identify((opponent_shape, outcome_secret)).expect("identifying shape");
-
-    (shape_1, shape_2)
+    (inputs[0], inputs[1])
 }
 
-// continue here: add param whole line so we can have pairs
-fn identify((opponent_move, outcome): (char, char)) -> Option<(Shape, Shape)> {
-    let indications: HashMap<char, i8> = HashMap::from([('X', -1), ('Y', 0), ('Z', 1)]);
-
-    let opponent_shape: Shape = get_shape_by_mapping(&opponent_move)?;
-
-    let outcome = indications.get(&outcome)?;
-    let outcome_shape = match outcome {
-        0 => opponent_shape,
-        1 => win(&opponent_shape)?,
-        -1 => lose(&opponent_shape)?,
+fn shape_to_play(opponent_mapping: &char, outcome: &char, strategy: u8) -> Option<Shape> {
+    match strategy {
+        1 => Some(get_shape_by_mapping(&outcome)?),
+        2 => match outcome {
+            'Y' => Some(get_shape_by_mapping(opponent_mapping)?),
+            'Z' => Some(win(opponent_mapping)?),
+            'X' => Some(lose(opponent_mapping)?),
+            _ => exit(1),
+        },
         _ => exit(1),
-    };
-
-    Some((opponent_shape, outcome_shape))
+    }
 }
 
 fn get_shape_by_mapping(mapping: &char) -> Option<Shape> {
-    for option in OPTIONS {
-        if option.mapping.cmp(mapping).is_eq() {
-            return Some(option);
+    for shape in OPTIONS {
+        if let Some(_) = shape
+            .mappings
+            .iter()
+            .find(|entry| entry.cmp(&mapping).is_eq())
+        {
+            return Some(shape);
         }
     }
 
     None
 }
 
-fn win(against: &Shape) -> Option<Shape> {
-    let shape: Shape = get_shape_by_mapping(&against.weakness)?;
-    Some(shape)
+fn win(against: &char) -> Option<Shape> {
+    let against_shape: Shape = get_shape_by_mapping(against)?;
+    Some(get_shape_by_mapping(&against_shape.weakness)?)
 }
 
-fn lose(against: &Shape) -> Option<Shape> {
-    let shape: Shape = get_shape_by_mapping(&against.strength)?;
-    Some(shape)
+fn lose(against: &char) -> Option<Shape> {
+    let against_shape: Shape = get_shape_by_mapping(against)?;
+    Some(get_shape_by_mapping(&against_shape.strength)?)
 }

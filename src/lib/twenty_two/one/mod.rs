@@ -22,8 +22,8 @@ pub fn run_1() -> Result<()> {
 
     let sum: u32 = get_last_three(&totals).iter().sum();
 
-    println!("part 1 answer {}", totals[totals.len() - 1]);
-    println!("part 2 answer {sum}");
+    println!("part 1 answer: {}", totals[totals.len() - 1]);
+    println!("part 2 answer: {}", sum);
 
     Ok(())
 }

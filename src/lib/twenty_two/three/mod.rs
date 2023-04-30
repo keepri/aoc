@@ -6,13 +6,15 @@ pub fn run_3() -> Result<()> {
     let rucksacks = rucksacks.lines().collect::<Vec<_>>();
 
     let mut part_one_score: u32 = 0;
-    for list in rucksacks.clone() {
-        let (compartment1, compartment2) = list.split_at(list.len() / 2);
-        let compartment1_items = compartment1.trim().split("").collect::<Vec<_>>();
-        let compartment2_items = compartment2.trim().split("").collect::<Vec<_>>();
+    let part_two_score: u32 = 0;
+
+    for list in rucksacks {
+        let (compartment_one, compartment_two) = list.split_at(list.len() / 2);
+        let compartment_one_items = compartment_one.trim().split("").collect::<Vec<_>>();
+        let compartment_two_items = compartment_two.trim().split("").collect::<Vec<_>>();
 
         let common_item =
-            find_common_item([compartment1_items, compartment2_items]).expect("common item");
+            find_common_item([compartment_one_items, compartment_two_items]).expect("common item");
         let common_item = common_item.chars().next().expect("common item to chars");
 
         let score = score_item(&common_item).expect("scoring item");
@@ -20,10 +22,8 @@ pub fn run_3() -> Result<()> {
         part_one_score += score;
     }
 
-    let part_two_score: u32 = 0;
-
-    println!("part one score is {part_one_score}");
-    println!("part two score is {part_two_score} - not done");
+    println!("part 1 answer: {}", part_one_score);
+    println!("part 2 answer: {} - not done", part_two_score);
 
     Ok(())
 }
