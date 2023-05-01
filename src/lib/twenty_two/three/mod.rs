@@ -3,37 +3,46 @@ use std::fs;
 
 pub fn run_3() -> Result<()> {
     let rucksacks = fs::read_to_string("static/files/input_3.txt")?;
-    let rucksacks = rucksacks.lines().collect::<Vec<_>>();
+    let mut rucksacks = rucksacks.lines();
+    let mut part_one_score: i32 = 0;
+    let mut part_two_score: i32 = 0;
+    let mut cache: Vec<&str> = vec![];
 
-    let mut part_one_score: u32 = 0;
-    let part_two_score: u32 = 0;
-
-    for item_list in rucksacks {
+    while let Some(item_list) = rucksacks.next() {
         let item_list = item_list.trim();
-        let (compartment_one, compartment_two) = item_list.split_at(item_list.len() / 2);
-        let pile_one = compartment_one.chars().collect::<Vec<_>>();
-        let pile_two = compartment_two.chars().collect::<Vec<_>>();
+        let (pile_one, pile_two) = item_list.split_at(item_list.len() / 2);
 
-        match find_common_item(&pile_one, &pile_two) {
-            Some(common_item) => {
-                let score = score_item(&common_item).expect("scoring item");
-                part_one_score += score as u32;
+        if let Some(common_one) = find_common_item(pile_one, pile_two, None) {
+            let score = score_item(&common_one).expect("scoring item");
+            part_one_score += score as i32;
+        }
+
+        cache.push(item_list);
+        if cache.len() == 3 {
+            if let Some(common_two) = find_common_item(cache[0], cache[1], Some(cache[2])) {
+                let score = score_item(&common_two).expect("scoring item");
+                part_two_score += score as i32;
             }
-            None => println!("could not find common item for {}", item_list),
+
+            cache = vec![];
         }
     }
 
     println!("part 1 answer: {}", part_one_score);
-    println!("part 2 answer: {} - not done", part_two_score);
+    println!("part 2 answer: {}", part_two_score);
 
     Ok(())
 }
 
-fn find_common_item<'a, 'b>(pile_one: &'a Vec<char>, pile_two: &'b Vec<char>) -> Option<&'a char> {
-    for char_one in pile_one {
-        for char_two in pile_two {
-            if char_one == char_two {
-                return Some(&char_one);
+fn find_common_item(pile_one: &str, pile_two: &str, pile_three: Option<&str>) -> Option<char> {
+    for char_one in pile_one.chars() {
+        if pile_two.contains(char_one) {
+            if let Some(pile_three) = pile_three {
+                if pile_three.contains(char_one) {
+                    return Some(char_one);
+                }
+            } else {
+                return Some(char_one);
             }
         }
     }
