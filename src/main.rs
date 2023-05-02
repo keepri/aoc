@@ -2,7 +2,7 @@
 
 mod lib;
 
-use crate::lib::twenty_two::{one::run_1, three::run_3, two::run_2};
+use crate::lib::twenty_two::{four::run_four, one::run_one, three::run_three, two::run_two};
 use std::{env, process};
 
 fn main() -> Result<(), anyhow::Error> {
@@ -17,9 +17,10 @@ fn main() -> Result<(), anyhow::Error> {
 
     match year {
         2022 => match day {
-            1 => run_1(),
-            2 => run_2(),
-            3 => run_3(),
+            1 => run_one(),
+            2 => run_two(),
+            3 => run_three(),
+            4 => run_four(),
             _ => {
                 eprintln!("{year} {day} not done");
                 process::exit(1)

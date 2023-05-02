@@ -1,7 +1,7 @@
 use anyhow::Result;
 use std::fs;
 
-pub fn run_1() -> Result<()> {
+pub fn run_one() -> Result<()> {
     let input = fs::read_to_string("static/files/input_1.txt")?;
 
     let found = input.split("\n\n").collect::<Vec<_>>();

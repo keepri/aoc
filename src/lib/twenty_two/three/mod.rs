@@ -1,7 +1,7 @@
 use anyhow::Result;
 use std::fs;
 
-pub fn run_3() -> Result<()> {
+pub fn run_three() -> Result<()> {
     let rucksacks = fs::read_to_string("static/files/input_3.txt")?;
     let mut rucksacks = rucksacks.lines();
     let mut part_one_score: i32 = 0;

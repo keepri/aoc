@@ -40,7 +40,7 @@ const WIN: u8 = 6;
 const DRAW: u8 = 3;
 const LOSS: u8 = 0;
 
-pub fn run_2() -> Result<()> {
+pub fn run_two() -> Result<()> {
     let input = fs::read_to_string("static/files/input_2.txt")?;
     let lines = input.lines().into_iter();
 
