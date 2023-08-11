@@ -2,12 +2,16 @@
 
 mod lib;
 
-use crate::lib::twenty_two::{four::run_four, one::run_one, three::run_three, two::run_two};
+use crate::lib::twenty_two::{
+    five::run_five, four::run_four, one::run_one, three::run_three, two::run_two,
+};
 use std::{env, process};
 
 fn main() -> Result<(), anyhow::Error> {
     if let true = env::args().count() < 3 {
+        eprintln!();
         eprintln!("please provide year and day");
+        eprintln!();
         process::exit(1)
     };
 
@@ -21,6 +25,7 @@ fn main() -> Result<(), anyhow::Error> {
             2 => run_two(),
             3 => run_three(),
             4 => run_four(),
+            5 => run_five(),
             _ => {
                 eprintln!("{year} {day} not done");
                 process::exit(1)
