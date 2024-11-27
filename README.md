@@ -1,4 +1,4 @@
-# Advent of Code - Rust 🦀
+# Advent of Code
 
-## 2022
+## 2022 - Rust 🦀
 - days: 1, 2, 3, 4, 5
