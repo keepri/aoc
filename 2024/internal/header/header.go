@@ -13,6 +13,7 @@ type printer struct {
 }
 
 func Print(day, part int) {
+	msgs := []string{"AOC 2024 LETS GO!"}
 	p := printer{
 		hz: "=",
 		vt: "",
@@ -23,28 +24,26 @@ func Print(day, part int) {
 	switch day {
 	case 1:
 		challenge = p.dayOne(part)
+	case 2:
+		challenge = p.dayTwo(part)
+	default:
+		p.header(msgs)
+		fmt.Println()
+		return
 	}
 
-	msgs := []string{"AOC 2024 LETS GO!"}
-	ok := len(challenge) > 0
-	var body string
-	if ok {
-		body = challenge[len(challenge)-1]
-		challenge = challenge[:len(challenge)-1]
-		challenge = append([]string{""}, challenge...)
-		msgs = append(msgs, challenge...)
-	}
+	body := challenge[len(challenge)-1]
+	challenge = challenge[:len(challenge)-1]
+	challenge = append([]string{""}, challenge...)
+	msgs = append(msgs, challenge...)
 
 	p.header(msgs)
 	fmt.Println()
-
-	if ok {
-		fmt.Println(body)
-		fmt.Println()
-	}
+	fmt.Println(body)
+	fmt.Println()
 }
 
-func (p *printer) header(msg []string) {
+func (p printer) header(msg []string) {
 	fmt.Println(p.repeat(p.hz, p.w))
 
 	for _, m := range msg {
@@ -57,7 +56,7 @@ func (p *printer) header(msg []string) {
 	fmt.Println(p.repeat(p.hz, p.w))
 }
 
-func (_ *printer) repeat(s string, n int) string {
+func (_ printer) repeat(s string, n int) string {
 	var res string
 	for i := 0; i < n; i++ {
 		res += s

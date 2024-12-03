@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/keepri/adventofcode/internal/data"
@@ -23,26 +22,26 @@ func (d *dayOne) solve(part int) (int, error) {
 		sort.Ints(left)
 		sort.Ints(right)
 
-		result := []int{}
+		out := []int{}
 		for i := 0; i < len(left); i++ {
 			leftLocId := left[i]
 			rightLocId := right[i]
 
 			if leftLocId >= rightLocId {
 				dif := leftLocId - rightLocId
-				result = append(result, dif)
+				out = append(out, dif)
 			} else {
 				dif := rightLocId - leftLocId
-				result = append(result, dif)
+				out = append(out, dif)
 			}
 		}
 
-		answer := 0
-		for _, v := range result {
-			answer += v
+		sum := 0
+		for _, v := range out {
+			sum += v
 		}
 
-		return answer, nil
+		return sum, nil
 	case 2:
 		similarity := 0
 		for i := 0; i < len(left); i++ {
@@ -61,20 +60,10 @@ func (_ *dayOne) parse(lines *[]string) ([]int, []int) {
 	right := []int{}
 	for _, line := range *lines {
 		v := strings.Split(line, "   ")
-		one := v[0]
-		two := v[1]
+		ints := parseInts(v)
 
-		n, err := strconv.ParseInt(one, 10, 0)
-		if err != nil {
-			panic(err)
-		}
-		left = append(left, int(n))
-
-		m, err := strconv.ParseInt(two, 10, 0)
-		if err != nil {
-			panic(err)
-		}
-		right = append(right, int(m))
+		left = append(left, ints[0])
+		right = append(right, ints[1])
 	}
 	return left, right
 }

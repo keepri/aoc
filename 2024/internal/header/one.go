@@ -3,7 +3,7 @@ package header
 func (p *printer) dayOne(part int) []string {
 	switch part {
 	case 1:
-		slice := []string{
+		return []string{
 			"--- Day 1: Historian Hysteria ---",
 			`The Chief Historian is always present for the big Christmas sleigh launch,
 but nobody has seen him in months! Last anyone heard, he was visiting
@@ -80,9 +80,8 @@ this is 2 + 1 + 0 + 1 + 2 + 5, a total distance of 11!
 
 Your actual left and right lists contain many location IDs. What is the
 total distance between your lists?`}
-		return slice
 	case 2:
-		slice := []string{
+		return []string{
 			"--- Day 1: Historian Hysteria ---",
 			"--- Part Two ---",
 			`Your analysis only confirmed what everyone feared: the two lists of
@@ -130,7 +129,6 @@ process is 31 (9 + 4 + 0 + 0 + 9 + 9).
 
 Once again consider your left and right lists. What is their similarity
 score?`}
-		return slice
 	}
 	return []string{}
 }
