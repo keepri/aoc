@@ -8,17 +8,20 @@ import (
 
 func GetLines(day int) ([]string, error) {
 	var f *os.File
+	var err error
 	switch day {
 	case 1:
-		if file, err := os.Open("internal/data/one"); err != nil {
-			fmt.Printf("Error opening file: %v\n", err)
-		} else {
-			f = file
-		}
+		f, err = openFile("internal/data/one")
+	case 19:
+		f, err = openFile("internal/data/nineteen-maybe")
 	default:
 		return nil, fmt.Errorf("Invalid day: %v passed into get line\n", day)
 	}
 	defer f.Close()
+
+	if err != nil {
+		return []string{}, err
+	}
 
 	out := []string{}
 	scanner := bufio.NewScanner(f)
@@ -31,4 +34,12 @@ func GetLines(day int) ([]string, error) {
 	}
 
 	return out, nil
+}
+
+func openFile(path string) (*os.File, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
 }

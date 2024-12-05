@@ -10,7 +10,7 @@ import (
 
 type dayOne struct{}
 
-func (d *dayOne) solve(part int) (int, error) {
+func (d dayOne) solve(part int) (int, error) {
 	lines, err := data.GetLines(1)
 	if err != nil {
 		return 0, err
@@ -50,9 +50,9 @@ func (d *dayOne) solve(part int) (int, error) {
 			similarity += locId * occurences
 		}
 		return similarity, nil
+	default:
+		return 0, fmt.Errorf("Invalid part: %v used for day 1", part)
 	}
-
-	return 0, fmt.Errorf("Invalid part: %v used for day 1", part)
 }
 
 func (_ *dayOne) parse(lines *[]string) ([]int, []int) {

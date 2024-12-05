@@ -26,7 +26,15 @@ func Print(day, part int) {
 		challenge = p.dayOne(part)
 	case 2:
 		challenge = p.dayTwo(part)
+	case 19:
+		challenge = p.dayNineteenMaybe(part)
 	default:
+		p.header(msgs)
+		fmt.Println()
+		return
+	}
+
+	if len(challenge) == 0 {
 		p.header(msgs)
 		fmt.Println()
 		return

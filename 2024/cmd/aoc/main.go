@@ -20,6 +20,9 @@ func main() {
 	case 1:
 		d := dayOne{}
 		answer, err = d.solve(part)
+	case 19:
+		d := dayNineteenMaybe{}
+		answer, err = d.solve(part)
 	default:
 		err = fmt.Errorf("Day %v not implemented\n", day)
 	}

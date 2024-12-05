@@ -1,6 +1,6 @@
 package header
 
-func (p *printer) dayOne(part int) []string {
+func (_ printer) dayOne(part int) []string {
 	switch part {
 	case 1:
 		return []string{
