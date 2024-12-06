@@ -12,6 +12,8 @@ func GetLines(day int) ([]string, error) {
 	switch day {
 	case 1:
 		f, err = openFile("internal/data/one")
+	case 2:
+		f, err = openFile("internal/data/two")
 	case 19:
 		f, err = openFile("internal/data/nineteen-maybe")
 	default:

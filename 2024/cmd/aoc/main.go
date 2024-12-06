@@ -9,6 +9,10 @@ import (
 
 func main() {
 	args := os.Args[1:]
+	if len(args) < 2 {
+		fmt.Println("Usage: aoc <day> <part>")
+		os.Exit(0)
+	}
 	ints := parseInts(args)
 	day, part := ints[0], ints[1]
 
@@ -19,6 +23,9 @@ func main() {
 	switch day {
 	case 1:
 		d := dayOne{}
+		answer, err = d.solve(part)
+	case 2:
+		d := dayTwo{}
 		answer, err = d.solve(part)
 	case 19:
 		d := dayNineteenMaybe{}
