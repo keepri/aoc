@@ -13,7 +13,7 @@ func main() {
 		fmt.Println("Usage: aoc <day> <part>")
 		os.Exit(0)
 	}
-	ints := parseInts(args)
+	ints := parseInts(&args)
 	day, part := ints[0], ints[1]
 
 	header.Print(day, part)

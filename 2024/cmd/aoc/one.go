@@ -60,7 +60,7 @@ func (_ *dayOne) parse(lines *[]string) ([]int, []int) {
 	right := []int{}
 	for _, line := range *lines {
 		v := strings.Split(line, "   ")
-		ints := parseInts(v)
+		ints := parseInts(&v)
 
 		left = append(left, ints[0])
 		right = append(right, ints[1])

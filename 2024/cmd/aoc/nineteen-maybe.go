@@ -7,9 +7,13 @@ import (
 	"github.com/keepri/adventofcode/internal/data"
 )
 
-const sep = " => "
+const SEP = " => "
 
 type dayNineteenMaybe struct{}
+
+type tuple struct {
+	From, To string
+}
 
 func (d dayNineteenMaybe) solve(part int) (int, error) {
 	lines, err := data.GetLines(19)
@@ -18,40 +22,35 @@ func (d dayNineteenMaybe) solve(part int) (int, error) {
 	}
 
 	out := 0
-	mappings := make(map[string][]string, len(lines))
+	mappings := []tuple{}
 	for _, line := range lines {
 		if len(line) == 0 {
 			continue
 		}
 
-		onMapping := strings.Contains(line, sep)
+		onMapping := strings.Contains(line, SEP)
 		if onMapping {
-			mapping := strings.Split(line, sep)
+			mapping := strings.Split(line, SEP)
 			from := mapping[0]
 			to := mapping[1]
-			if _, ok := mappings[from]; ok {
-				mappings[from] = append(mappings[from], to)
-			} else {
-				mappings[from] = []string{to}
-			}
+			tuple := tuple{from, to}
+			mappings = append(mappings, tuple)
 			continue
 		}
 
 		switch part {
 		case 1:
 			molecules := []string{}
-			for from, to := range mappings {
-				replacements := strings.Count(line, from)
-				for _, t := range to {
-					for nth := 1; nth <= replacements; nth++ {
-						index := nthIndex(line, from, nth)
-						pre := line[:index]
-						post := line[index+len(from):]
+			for _, m := range mappings {
+				replacements := strings.Count(line, m.From)
 
-						molecule := pre + t + post
-						if exists(molecules, molecule) {
-							continue
-						}
+				for nth := 1; nth <= replacements; nth++ {
+					index := nthIndex(&line, m.From, nth)
+					pre := line[:index]
+					post := line[index+len(m.From):]
+					molecule := pre + m.To + post
+
+					if !exists(&molecules, molecule) {
 						molecules = append(molecules, molecule)
 					}
 				}

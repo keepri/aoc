@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-func parseInts(args []string) []int {
+func parseInts(args *[]string) []int {
 	out := []int{}
-	for _, a := range args {
+	for _, a := range *args {
 		arg, err := strconv.ParseInt(a, 10, 0)
 		if err != nil {
 			fmt.Printf("Could not parse %v to int\n", a)
@@ -21,7 +21,7 @@ func parseInts(args []string) []int {
 	return out
 }
 
-func nthIndex(str, substr string, n int) int {
+func nthIndex(str *string, substr string, n int) int {
 	if n <= 0 {
 		return -1
 	}
@@ -29,7 +29,7 @@ func nthIndex(str, substr string, n int) int {
 	index := -1
 	start := 0
 	for i := 0; i < n; i++ {
-		pos := strings.Index(str[start:], substr)
+		pos := strings.Index((*str)[start:], substr)
 		if pos == -1 {
 			return pos
 		}
@@ -40,9 +40,9 @@ func nthIndex(str, substr string, n int) int {
 	return index
 }
 
-func exists(slice []string, str string) bool {
+func exists(slice *[]string, str string) bool {
 	exists := false
-	for _, v := range slice {
+	for _, v := range *slice {
 		if v == str {
 			exists = true
 			break

@@ -20,7 +20,7 @@ func (d dayTwo) solve(part int) (int, error) {
 	safe := 0
 	for _, line := range lines {
 		split := strings.Split(line, " ")
-		numbers := parseInts(split)
+		numbers := parseInts(&split)
 
 		switch part {
 		case 1:
