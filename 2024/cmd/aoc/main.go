@@ -29,6 +29,9 @@ func main() {
 	case 2:
 		d := dayTwo{}
 		answer, err = d.solve(part)
+	case 3:
+		d := dayThree{}
+		answer, err = d.solve(part)
 	case 19:
 		d := dayNineteenMaybe{}
 		answer, err = d.solve(part)

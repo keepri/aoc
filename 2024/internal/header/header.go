@@ -26,6 +26,8 @@ func Print(day, part int) {
 		challenge = p.dayOne(part)
 	case 2:
 		challenge = p.dayTwo(part)
+	case 3:
+		challenge = p.dayThree(part)
 	case 19:
 		challenge = p.dayNineteenMaybe(part)
 	default:

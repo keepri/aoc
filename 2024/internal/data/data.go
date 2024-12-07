@@ -14,6 +14,8 @@ func GetLines(day int) ([]string, error) {
 		f, err = openFile("internal/data/one")
 	case 2:
 		f, err = openFile("internal/data/two")
+	case 3:
+		f, err = openFile("internal/data/three")
 	case 19:
 		f, err = openFile("internal/data/nineteen-maybe")
 	default:
@@ -29,6 +31,9 @@ func GetLines(day int) ([]string, error) {
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		line := scanner.Text()
+		if line == "@end" {
+			break
+		}
 		out = append(out, line)
 	}
 	if err := scanner.Err(); err != nil {

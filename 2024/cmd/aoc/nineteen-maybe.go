@@ -54,7 +54,10 @@ func (d dayNineteenMaybe) solve(part int) (int, error) {
 	return out, nil
 }
 
-func (_ dayNineteenMaybe) createMolecules(molecule string, mappings []tuple) []string {
+func (_ dayNineteenMaybe) createMolecules(
+	molecule string,
+	mappings []tuple,
+) []string {
 	molecules := []string{}
 	for _, m := range mappings {
 		replacements := strings.Count(molecule, m.From)
