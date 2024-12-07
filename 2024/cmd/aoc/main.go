@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/keepri/adventofcode/internal/header"
 )
@@ -18,6 +19,7 @@ func main() {
 
 	header.Print(day, part)
 
+	start := time.Now()
 	var err error
 	var answer int
 	switch day {
@@ -33,10 +35,11 @@ func main() {
 	default:
 		err = fmt.Errorf("Day %v not implemented\n", day)
 	}
+	elapsed := float64(time.Since(start).Abs().Microseconds()) / 1000
 
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("Answer:", answer)
+		fmt.Println("Answer:", answer, "in", elapsed, "ms")
 	}
 }

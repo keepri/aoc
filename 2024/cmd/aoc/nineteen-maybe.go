@@ -8,6 +8,7 @@ import (
 )
 
 const SEP = " => "
+const ELECTRON = "e"
 
 type dayNineteenMaybe struct{}
 
@@ -57,10 +58,36 @@ func (d dayNineteenMaybe) solve(part int) (int, error) {
 			}
 			out = len(molecules)
 		case 2:
-			return 0, fmt.Errorf("Day 19 part 2 not implemented... yet")
+			steps := 0
+			d.decompose(&line, &mappings, &steps)
+			return steps, nil
 		default:
 			return 0, fmt.Errorf("Invalid part: %v used for day 19", part)
 		}
 	}
 	return out, nil
+}
+
+func (d dayNineteenMaybe) decompose(molecule *string, mappings *[]tuple, steps *int) {
+	if *molecule == ELECTRON {
+		return
+	}
+
+	for _, m := range *mappings {
+		if !strings.Contains(*molecule, m.To) {
+			continue
+		}
+
+		mol := strings.Replace(*molecule, m.To, m.From, 1)
+		if m.From == ELECTRON && mol != ELECTRON {
+			continue
+		}
+		*steps++
+		*molecule = mol
+		if mol == ELECTRON {
+			break
+		}
+	}
+
+	d.decompose(molecule, mappings, steps)
 }
