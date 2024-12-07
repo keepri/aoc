@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/keepri/adventofcode/internal/data"
@@ -19,8 +19,8 @@ func (d dayOne) solve(part int) (int, error) {
 
 	switch part {
 	case 1:
-		sort.Ints(left)
-		sort.Ints(right)
+		slices.Sort(left)
+		slices.Sort(right)
 
 		out := []int{}
 		for i := 0; i < len(left); i++ {

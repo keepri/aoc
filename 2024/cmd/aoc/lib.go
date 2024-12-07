@@ -17,7 +17,6 @@ func parseInts(args *[]string) []int {
 		}
 		out = append(out, int(arg))
 	}
-
 	return out
 }
 
